@@ -27,3 +27,7 @@ html.dark {
   width: 100%;
   height: 2px;
 }
+
+.echart-container {
+  border-width: 5px;
+}

@@ -98,7 +98,7 @@ onMounted(async () => {
   echarts.registerMap('USA', await response.json())
 
   response = await fetch('/data/100000_full.json')
-  echarts.registerMap('China', await response.json())
+  echarts.registerMap('china', await response.json())
 
   const option = {
     title: {
@@ -110,7 +110,7 @@ onMounted(async () => {
       transitionDuration: 0.2,
     },
     toolbox: {
-      show: true,
+      show: false,
       // orient: 'vertical',
       left: 'left',
       top: 'top',
@@ -122,9 +122,9 @@ onMounted(async () => {
     },
     geo: [
       {
-        name: 'China',
+        name: 'china',
         type: 'map',
-        map: 'China',
+        map: 'china',
         left: 20,
         zoom: 1,
         roam: false,
@@ -174,8 +174,8 @@ onMounted(async () => {
     ],
     series: [
       {
-        name: 'China',
-        map: 'China',
+        name: 'china',
+        map: 'china',
         type: 'effectScatter',
         coordinateSystem: 'geo',
         geoIndex: 0,
@@ -246,7 +246,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div id="chartID" style="width: 100vw;height:100vh" />
+  <div class="echart-container" id="chartID" style="width: 1920px;height:1080px" />
 </template>
 
 <route lang="yaml">
