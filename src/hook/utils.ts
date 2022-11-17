@@ -1,5 +1,7 @@
 export const geoCoordMap: { [key: string]: number[] } = {
   纽约: [-74, 40.7],
+  旧金山湾区: [-122.28, 37.75],
+  粤港澳湾区: [113.23, 23.16],
   海门: [121.15, 31.89],
   鄂尔多斯: [109.781327, 39.608266],
   招远: [120.38, 37.35],
@@ -193,6 +195,10 @@ export const geoCoordMap: { [key: string]: number[] } = {
   江门: [113.06, 22.61],
   澳门: [113.541389, 22.195833],
   香港: [114.165278, 22.280556],
+}
+
+export function scale(number: number, inMin: number, inMax: number, outMin: number, outMax: number): number {
+  return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 }
 
 export const convertData = function (data: CityData[]) {
