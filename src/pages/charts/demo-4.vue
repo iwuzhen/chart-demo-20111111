@@ -186,7 +186,7 @@ onMounted(async () => {
           },
           symbolSize(val: number[]) {
             // 线性映射到 0-100的范围
-            return scale(val[2], 0, 156735, 5, 80)
+            return scale(val[2], 0, 156735, 5, 60)
           },
           // showEffectOn: 'emphasis',
           // rippleEffect: {
