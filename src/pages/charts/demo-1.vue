@@ -223,7 +223,7 @@ onMounted(async () => {
   echarts.registerMap('USA', await response.json())
 
   response = await fetch('/data/100000_full.json')
-  echarts.registerMap('china', await response.json())
+  echarts.registerMap('China', await response.json())
 
   const option: echarts.EChartsOption = {
     backgroundColor: '#012248',
@@ -277,7 +277,7 @@ onMounted(async () => {
         name: 'china',
         id: 0,
         type: 'map',
-        map: 'china',
+        map: 'China',
         left: 20,
         zoom: 1,
         roam: false,
