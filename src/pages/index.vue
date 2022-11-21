@@ -8,6 +8,10 @@
     <a btn m-3 text-sm href="charts/demo-2"><p>demo-2</p></a>
     <a btn m-3 text-sm href="charts/demo-3"><p>demo-3</p></a>
     <a btn m-3 text-sm href="charts/demo-4"><p>demo-4</p></a>
+    <a btn m-3 text-sm href="charts/demo-5"><p>demo-5</p></a>
+    <a btn m-3 text-sm href="charts/demo-6"><p>demo-6</p></a>
+
+    <!-- <img src="img/ygk.png"> -->
   </div>
 </template>
 

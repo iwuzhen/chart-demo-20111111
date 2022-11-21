@@ -260,20 +260,19 @@ onMounted(async () => {
         //   borderWidth: 1,
         // },
         itemStyle: {
-          normal: {
-            areaColor: '#24CFF4',
-            borderColor: '#53D9FF',
-            borderWidth: 1.3,
-            shadowBlur: 15,
-            shadowColor: '#3a73c0',
-            shadowOffsetX: 7,
-            shadowOffsetY: 6,
-          },
-          emphasis: {
-            areaColor: '#8dd7fc',
-            borderWidth: 1.6,
-            shadowBlur: 25,
-          },
+          areaColor: '#24CFF4',
+          borderColor: '#53D9FF',
+          borderWidth: 1.3,
+          shadowBlur: 15,
+          shadowColor: '#3a73c0',
+          shadowOffsetX: 7,
+          shadowOffsetY: 6,
+
+          // emphasis: {
+          // areaColor: '#8dd7fc',
+          // borderWidth: 1.6,
+          // shadowBlur: 25,
+          // },
         },
         center: [100, 30],
         emphasis: {
