@@ -3,7 +3,7 @@ import * as echarts from 'echarts'
 import _ from 'lodash'
 import { onMounted } from 'vue'
 import 'd3-array'
-import { convertData, geoCoordMap } from '~/hook/utils'
+import { geoCoordMap, scale } from '~/hook/utils'
 
 const sourceData = [
   // [1987, 'JP', '天津', 1],
@@ -77,16 +77,16 @@ const sourceData = [
   // [2020, 'SG', '深圳', 831],
   // [2020, 'JP', '深圳', 573],
   // [2020, 'FR', '深圳', 544],
-  [2020, 'US', '北京', 32008],
-  [2020, 'IN', '北京', 9672],
-  [2020, 'GB', '北京', 9495],
-  [2020, 'AU', '北京', 6718],
-  [2020, 'CA', '北京', 6233],
-  [2020, 'DE', '北京', 5312],
-  [2020, 'KR', '北京', 5065],
-  [2020, 'SG', '北京', 3720],
-  [2020, 'JP', '北京', 3560],
-  [2020, 'IR', '北京', 3508],
+  // [2020, 'US', '北京', 32008],
+  // [2020, 'IN', '北京', 9672],
+  // [2020, 'GB', '北京', 9495],
+  // [2020, 'AU', '北京', 6718],
+  // [2020, 'CA', '北京', 6233],
+  // [2020, 'DE', '北京', 5312],
+  // [2020, 'KR', '北京', 5065],
+  // [2020, 'SG', '北京', 3720],
+  // [2020, 'JP', '北京', 3560],
+  // [2020, 'IR', '北京', 3508],
   // [2020, 'US', '南京', 6917],
   // [2020, 'IN', '南京', 3637],
   // [2020, 'GB', '南京', 2495],
@@ -97,16 +97,16 @@ const sourceData = [
   // [2020, 'ES', '南京', 969],
   // [2020, 'JP', '南京', 948],
   // [2020, 'SG', '南京', 894],
-  [2020, 'US', '武汉', 5370],
-  [2020, 'IN', '武汉', 2786],
-  [2020, 'GB', '武汉', 2127],
-  [2020, 'AU', '武汉', 1650],
-  [2020, 'CA', '武汉', 1343],
-  [2020, 'IR', '武汉', 1221],
-  [2020, 'KR', '武汉', 1098],
-  [2020, 'DE', '武汉', 862],
-  [2020, 'SA', '武汉', 860],
-  [2020, 'JP', '武汉', 825],
+  // [2020, 'US', '武汉', 5370],
+  // [2020, 'IN', '武汉', 2786],
+  // [2020, 'GB', '武汉', 2127],
+  // [2020, 'AU', '武汉', 1650],
+  // [2020, 'CA', '武汉', 1343],
+  // [2020, 'IR', '武汉', 1221],
+  // [2020, 'KR', '武汉', 1098],
+  // [2020, 'DE', '武汉', 862],
+  // [2020, 'SA', '武汉', 860],
+  // [2020, 'JP', '武汉', 825],
   // [2020, 'US', '成都', 4502],
   // [2020, 'IN', '成都', 2207],
   // [2020, 'GB', '成都', 1472],
@@ -118,6 +118,18 @@ const sourceData = [
   // [2020, 'PK', '成都', 747],
   // [2020, 'SG', '成都', 732],
 ]
+
+const getMMcolor = (obj) => {
+  // console.log(object)
+  if (obj.data.dest === '纽约')
+    return 'blue'
+  return 'red'
+}
+
+const getSize = (value) => {
+  // console.log(object)
+  return scale(value, 0, 31094, 2, 50)
+}
 
 onMounted(async () => {
   const response = await fetch('/data/world_r.json')
@@ -202,6 +214,8 @@ onMounted(async () => {
     lineData.push({
       name,
       value,
+      source: item[1],
+      dest: item[2],
       coords: [coordinateB, coordinateA],
     })
   }
@@ -247,19 +261,37 @@ onMounted(async () => {
       },
     ],
     series: [
-      {
-        name: 'bgLine',
-        coordinateSystem: 'geo',
-        type: 'lines',
-        lineStyle: {
-          color: param => getColor(param.data.value),
-          width: 2,
-          opacity: 0.5,
-          curveness: 0.2,
-        },
-        clip: false,
-        data: lineData,
-      },
+      // {
+      //   name: 'bgLine',
+      //   coordinateSystem: 'geo',
+      //   type: 'lines',
+      //   lineStyle: {
+      //     color: param => getMMcolor(param),
+      //     // width: param => getSize(param),
+      //     width: 2,
+      //     opacity: 0.5,
+      //     curveness: 0.2,
+      //   },
+      //   clip: false,
+      //   data: lineData,
+      // },
+      ...lineData.map((obj) => {
+        // console.log(obj)
+        return {
+          name: 'bgLine',
+          coordinateSystem: 'geo',
+          type: 'lines',
+          lineStyle: {
+            color: param => getMMcolor(param),
+            width: getSize(obj.value),
+            // width: 2,
+            opacity: 0.5,
+            curveness: 0.2,
+          },
+          clip: false,
+          data: [obj],
+        }
+      }),
       // {
       //   name: 'scatter',
       //   type: 'effectScatter',
@@ -279,23 +311,23 @@ onMounted(async () => {
       //   },
       //   data: scatterData,
       // },
-      {
-        name: 'sLine',
-        type: 'lines',
-        coordinateSystem: 'geo',
-        effect: {
-          show: true,
-          period: 6,
-          trailLength: 0.4,
-          symbolSize: 3,
-        },
-        lineStyle: {
-          color: param => getColor(param.data.value),
-          width: 0,
-          curveness: 0.2,
-        },
-        data: lineData,
-      },
+      // {
+      //   name: 'sLine',
+      //   type: 'lines',
+      //   coordinateSystem: 'geo',
+      //   effect: {
+      //     show: true,
+      //     period: 6,
+      //     trailLength: 0.6,
+      //     symbolSize: [10, 20],
+      //   },
+      //   lineStyle: {
+      //     color: param => getMMcolor(param),
+      //     width: param => getSize(param),
+      //     curveness: 0.2,
+      //   },
+      //   data: lineData,
+      // },
     ],
     animationDuration: 20000,
   }
