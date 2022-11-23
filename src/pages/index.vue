@@ -36,6 +36,7 @@
     <!-- <a btn m-3 text-sm href="charts/domestic-scholarship"><p>国内论文</p></a> -->
     <a btn m-3 text-sm href="charts/china-us-compare-1"><p>中美 4 地区论文数比较</p></a>
     <a btn m-3 text-sm href="charts/china-us-compare-2"><p>中美多个大城市论文数比较</p></a>
+    <a btn m-3 text-sm href="charts/china-us-global-cite"><p>中美多个大城市论文数全球引用分布</p></a>
   </div>
 
   <p mt-10 class="text-[2em]">

@@ -138,6 +138,7 @@ onMounted(async () => {
         ...chinaData[0].slice(1).map((cityName, cityIndex): echarts.SeriesOption => {
           return {
             id: cityName,
+            name: cityName,
             type: 'line',
             xAxisIndex: 0,
             yAxisIndex: 0,
@@ -145,14 +146,14 @@ onMounted(async () => {
             labelLayout: {
               // moveOverlap: 'shiftX',
             },
-            endLabel: {
-              show: true,
-              fontSize: 16,
-              formatter(params: any) {
-                // console.log(params)
-                return `${params.seriesId}: ${params.value[1]}`
-              },
-            },
+            // endLabel: {
+            //   show: true,
+            //   fontSize: 16,
+            //   formatter(params: any) {
+            //     // console.log(params)
+            //     return `${params.seriesId}: ${params.value[1]}`
+            //   },
+            // },
             data: chinaData.slice(1).map((dataItem, currentIndex) => {
               if (currentIndex <= index)
                 return [dataItem[0], dataItem[cityIndex + 1]]
@@ -163,6 +164,7 @@ onMounted(async () => {
         }), ...usaData[0].slice(1).map((cityName, cityIndex): echarts.SeriesOption => {
           return {
             id: cityName,
+            name: cityName,
             type: 'line',
             xAxisIndex: 0,
             yAxisIndex: 0,
@@ -170,14 +172,14 @@ onMounted(async () => {
             labelLayout: {
               // moveOverlap: 'shiftX',
             },
-            endLabel: {
-              show: true,
-              fontSize: 16,
-              formatter(params: any) {
-                // console.log(params)
-                return `${params.seriesId}: ${params.value[1]}`
-              },
-            },
+            // endLabel: {
+            //   show: true,
+            //   fontSize: 16,
+            //   formatter(params: any) {
+            //     // console.log(params)
+            //     return `${params.seriesId}: ${params.value[1]}`
+            //   },
+            // },
             data: usaData.slice(1).map((dataItem, currentIndex) => {
               if (currentIndex <= index)
                 return [dataItem[0], dataItem[cityIndex + 1]]
@@ -298,7 +300,8 @@ onMounted(async () => {
             show: true,
           },
           itemStyle: {
-            color: 'rgb(139,183,255)',
+            // color: 'rgb(139,183,255)',
+            color: 'yellow',
             shadowBlur: 10,
             shadowColor: '#333',
           },
@@ -323,6 +326,7 @@ onMounted(async () => {
         bottom: 100,
         // right: 1200,
         height: 200,
+        // height: 1600,
         width: 400,
       },
     ],
@@ -401,7 +405,43 @@ onMounted(async () => {
     series: [
 
     ],
+    color: ['#ee6666', '#fac858', '#91cc75', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#5470c6', '#ea7ccc'],
 
+    legend: [
+      {
+        show: true,
+        orient: 'vertical',
+        data: ['波士顿', '旧金山湾区', '北京', '达拉斯', '深圳', '休斯顿', '纽约', '上海', '广州'],
+        // z: 30,
+        right: 550,
+        top: 764,
+        textStyle: {
+          color: 'rgb(255,255,255)',
+          fontSize: 14,
+        },
+        // itemStyle: 10,
+        padding: 2,
+        // itemStyle:{
+
+        // }
+      }, {
+        show: true,
+        orient: 'vertical',
+        data: ['杭州', '天津', '南京', '武汉', '成都', '北卡三角研究区', '长沙'],
+        // z: 30,
+        right: 405,
+        top: 764,
+        textStyle: {
+          color: 'rgb(255,255,255)',
+          fontSize: 14,
+        },
+        // itemStyle: 10,
+        padding: 2,
+        // itemStyle:{
+
+        // }
+      },
+    ],
     timeline: {
       show: true,
       axisType: 'category',

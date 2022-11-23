@@ -172,28 +172,6 @@ onMounted(async () => {
         saveAsImage: {},
       },
     },
-    bmap: {
-      // 百度地图中心经纬度。默认为 [104.114129, 37.550339]。
-      center: [180.13066322374, 30.240018034923],
-      // 百度地图缩放级别。默认为 5。
-
-      layoutSize: 100,
-      layoutCenter: ['30%', '30%'],
-      zoom: 1,
-      // 是否开启拖拽缩放，可以只设置 'scale' 或者 'move'。默认关闭。
-      roam: true,
-      // 百度地图的旧版自定义样式，见 https://lbsyun.baidu.com/custom/index.htm
-      mapStyle: {},
-      // 百度地图 3.0 之后的新版自定义样式，见 https://lbsyun.baidu.com/index.php?title=open/custom
-      mapStyleV2: {
-      },
-      // 百度地图的初始化配置，见 https://lbsyun.baidu.com/cms/jsapi/reference/jsapi_reference.html#a0b1
-      mapOptions: {
-        // 禁用百度地图自带的底图可点功能
-        enableMapClick: false,
-        minZoom: 0.2,
-      },
-    },
     geo: [
       {
         id: 0,
@@ -204,13 +182,13 @@ onMounted(async () => {
           project: point => [point[0] / 180 * Math.PI, -Math.log(Math.tan((Math.PI / 2 + point[1] / 180 * Math.PI) / 2))],
           unproject: point => [point[0] * 180 / Math.PI, 2 * 180 / Math.PI * Math.atan(Math.exp(point[1])) - 90],
         },
-        zoom: 1,
+        zoom: 1.4,
         emphasis: {
           disabled: true,
         },
         // center: [10, 30],
-        // top: 100,
-        // left: 100,
+        top: -30,
+        left: 300,
       },
     ],
     series: [
@@ -246,23 +224,23 @@ onMounted(async () => {
         },
         data: scatterData,
       },
-      // {
-      //   name: 'sLine',
-      //   type: 'lines',
-      //   coordinateSystem: 'geo',
-      //   effect: {
-      //     show: true,
-      //     period: 6,
-      //     trailLength: 0.4,
-      //     symbolSize: 20,
-      //   },
-      //   lineStyle: {
-      //     color: param => getColor(param.data.value),
-      //     width: 0,
-      //     curveness: 0.2,
-      //   },
-      //   data: lineData,
-      // },
+      {
+        name: 'sLine',
+        type: 'lines',
+        coordinateSystem: 'geo',
+        effect: {
+          show: true,
+          period: 6,
+          trailLength: 0.4,
+          symbolSize: 20,
+        },
+        lineStyle: {
+          color: param => getColor(param.data.value),
+          width: 0,
+          curveness: 0.2,
+        },
+        data: lineData,
+      },
     ],
   }
   // console.log(option)

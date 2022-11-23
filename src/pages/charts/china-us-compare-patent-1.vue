@@ -199,18 +199,19 @@ onMounted(async () => {
         ...demoData[0].slice(1).map((cityName, cityIndex): echarts.SeriesOption => {
           return {
             id: cityName,
+            name: cityName,
             type: 'line',
             xAxisIndex: 0,
             yAxisIndex: 0,
             showSymbol: false,
-            endLabel: {
-              show: true,
-              fontSize: 20,
-              formatter(params: any) {
-                // console.log(params)
-                return `${params.seriesId}: ${params.value[1]}`
-              },
-            },
+            // endLabel: {
+            //   show: true,
+            //   fontSize: 20,
+            //   formatter(params: any) {
+            //     // console.log(params)
+            //     return `${params.seriesId}: ${params.value[1]}`
+            //   },
+            // },
             data: demoData.slice(1).map((dataItem, currentIndex) => {
               if (currentIndex <= index)
                 return [dataItem[0], dataItem[cityIndex + 1]]
@@ -305,7 +306,7 @@ onMounted(async () => {
             show: true,
           },
           itemStyle: {
-            color: 'rgb(139,183,255)',
+            color: 'yellow',
             shadowBlur: 10,
             shadowColor: '#333',
           },
@@ -380,6 +381,60 @@ onMounted(async () => {
               color: 'red',
             },
           },
+          labelLayout(params: any): any {
+            const ret = {
+              y: params.labelRect.y,
+              x: params.labelRect.x,
+              // x: params.rect.x,
+              // moveOverlap: 'shiftX',
+              align: 'left',
+              verticalAlign: 'middle',
+            }
+            if (params.text === 'Richmond') {
+              ret.align = 'right'
+              ret.x -= 20
+              ret.y -= 10
+            }
+            if (params.text === 'Fremont') {
+              ret.align = 'right'
+              ret.x -= 20
+              ret.y -= 10
+            }
+            if (params.text === 'San Jose') {
+              ret.align = 'right'
+              ret.x -= 20
+              ret.y += 30
+            }
+            if (params.text === 'Berkeley') {
+              ret.align = 'right'
+              ret.y += 20
+              ret.x -= 40
+            }
+            if (params.text === 'San Francisco')
+              ret.y -= 20
+            if (params.text === 'Newark')
+              ret.y -= 20
+            if (params.text === 'Mountain View') {
+              // ret.y -= 20
+              ret.x += 20
+            }
+            if (params.text === 'Palo Alto') {
+              ret.y += 20
+              ret.x -= 20
+              ret.align = 'right'
+            }
+            if (params.text === 'Santa Clara') {
+              ret.y += 30
+              ret.x -= 40
+              ret.align = 'right'
+            }
+
+            if (params.text === 'Sunnyvale') {
+              ret.y -= 30
+              ret.x += 20
+            }
+            return ret
+          },
           encode: {
             value: 2,
           },
@@ -390,12 +445,12 @@ onMounted(async () => {
           label: {
             formatter: '{b}',
             fontSize: 20,
-            // color: 'red',
+            // color: 'yellow',
             position: 'right',
             show: true,
           },
           itemStyle: {
-            color: 'rgb(139,183,255)',
+            color: 'yellow',
             shadowBlur: 10,
             shadowColor: '#333',
           },
@@ -484,13 +539,6 @@ onMounted(async () => {
           disabled: true,
         },
         center: ['-3%', '25%'],
-        // layoutCenter: ['30%', '30%'],
-        // layoutSize: 500,
-        // itemStyle: {
-        //   areaColor: '#eee',
-        //   color: 'rgba(255,255,255,244)',
-        //   borderColor: '#fff',
-        // },
         itemStyle: geoMapItemStyle.style_1,
       }, {
         id: 2,
@@ -518,31 +566,6 @@ onMounted(async () => {
             // repeat: 'repeat-x',
           },
         },
-        // right: 40,
-        // center: ['0%', '30%'],
-        // layoutCenter: ['30%', '30%'],
-        // layoutSize: 500,
-        // itemStyle: {
-        //   areaColor: '#eee',
-        //   color: 'rgba(255,255,255,244)',
-        //   borderColor: '#fff',
-        // },
-        // itemStyle: {
-        //   normal: {
-        //     areaColor: '#24CFF4',
-        //     borderColor: '#53D9FF',
-        //     borderWidth: 1.3,
-        //     shadowBlur: 15,
-        //     shadowColor: '#3a73c0',
-        //     shadowOffsetX: 7,
-        //     shadowOffsetY: 6,
-        //   },
-        //   emphasis: {
-        //     areaColor: '#8dd7fc',
-        //     borderWidth: 1.6,
-        //     shadowBlur: 25,
-        //   },
-        // },
       },
       {
         id: 3,
@@ -557,17 +580,8 @@ onMounted(async () => {
         emphasis: {
           disabled: false,
         },
-        layoutCenter: [1485, 713],
+        layoutCenter: [1398, 269],
         layoutSize: 443,
-        // top: 640,
-        // left: 1480,
-        // center: [10, 30],
-        // bottom: '80px',
-        // right: '77px',
-        // right: 0,
-        // bottom: 0,
-        // top: 440,
-        // left: 1080,
 
         itemStyle: {
           areaColor: {
@@ -593,7 +607,7 @@ onMounted(async () => {
         coordinateSystem: 'geo',
         geoIndex: 0,
         data: [{
-          name: '粤港澳大湾区',
+          name: '粤港澳湾区',
           value: [113.541389, 22.195833],
         }],
 
@@ -633,13 +647,6 @@ onMounted(async () => {
           value: [-122.28, 37.75],
         }],
 
-        // labelLine: {
-        //   show: true,
-        //   length2: 2,
-        //   lineStyle: {
-        //     color: '#bbb',
-        //   },
-        // },
         symbol: 'circle',
         symbolSize: 40,
         // showEffectOn: 'render',
@@ -661,6 +668,19 @@ onMounted(async () => {
         },
       },
     ],
+    color: ['#ee6666', '#fac858', '#91cc75', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#5470c6', '#ea7ccc'],
+    legend: {
+      show: true,
+      orient: 'vertical',
+      data: ['旧金山湾区', '粤港澳湾区', '纽约', '上海'],
+      // z: 30,
+      right: 550,
+      bottom: 200,
+      textStyle: {
+        color: 'rgb(255,255,255)',
+        fontSize: 16,
+      },
+    },
     graphic: [
       {
         type: 'group',
@@ -681,10 +701,10 @@ onMounted(async () => {
           }, {
             type: 'line',
             shape: {
-              x1: 1145,
-              y1: 499,
-              x2: 1285,
-              y2: 585,
+              x1: 1150,
+              y1: 463,
+              x2: 1219,
+              y2: 419,
             },
             style: {
               lineWidth: 2,
