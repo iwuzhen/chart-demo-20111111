@@ -329,7 +329,7 @@ onMounted(async () => {
       //   data: lineData,
       // },
     ],
-    animationDuration: 20000,
+    animationDuration: 10000,
   }
   // console.log(option)
   // console.log(option)
