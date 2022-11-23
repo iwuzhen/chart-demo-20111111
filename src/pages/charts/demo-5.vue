@@ -4,8 +4,9 @@ import _ from 'lodash'
 import { onMounted } from 'vue'
 import * as d3 from 'd3-geo'
 import 'd3-array'
-import { convertData, geoCoordMap, scale } from '~/hook/utils'
+import { convertData, scale } from '~/hook/utils'
 import mapBackground from '~/assert/mapBackground.png'
+import { geoMapItemStyle } from '~/hook/sharedata'
 
 const USAprojection = d3.geoAlbersUsa()
 
@@ -54,20 +55,6 @@ const demoData = [
   [2020, 59808, 81200, 42999, 63676],
   [2021, 66193, 91184, 51185, 77463],
   [2022, 68535, 94659, 55465, 83884],
-]
-
-const dataChina: CityData[] = [
-  {
-    name: '上海',
-    value: 72,
-  },
-]
-
-const dataUSA: CityData[] = [
-  {
-    name: '纽约',
-    value: 112,
-  },
 ]
 
 onMounted(async () => {
@@ -308,7 +295,7 @@ onMounted(async () => {
   const chartObj = echarts.init(elem, undefined, { renderer: 'svg' })
 
   const option: echarts.EChartsOption = {
-    // backgroundColor: '#012248',
+    backgroundColor: '#012248',
     title: {
       text: 'China and US',
     },
@@ -356,9 +343,8 @@ onMounted(async () => {
         type: 'map',
         map: 'China',
         left: 20,
-        zoom: 1,
+        zoom: 1.1,
         roam: false,
-
         emphasis: {
           disabled: true,
         },
@@ -375,19 +361,11 @@ onMounted(async () => {
         //     show: false,
         //   },
         // },
-        itemStyle: {
-          areaColor: '#24CFF4',
-          borderColor: '#53D9FF',
-          borderWidth: 1,
-          shadowBlur: 30,
-          shadowColor: '#3a73c0',
-          shadowOffsetX: 3,
-          shadowOffsetY: 3,
-
-        },
+        itemStyle: geoMapItemStyle.style_1,
       },
       {
         id: 1,
+        zoom: 0.95,
         name: 'USA',
         type: 'map',
         map: 'USA',
@@ -398,13 +376,14 @@ onMounted(async () => {
           },
           unproject(point: [number, number]) {
             if (USAprojection.invert)
-              return USAprojection.invert(point)
+              return USAprojection.invert(point) as number[]
+            return []
           },
         },
         emphasis: {
           disabled: true,
         },
-        center: ['0%', '30%'],
+        center: ['0%', '33%'],
         // layoutCenter: ['30%', '30%'],
         // layoutSize: 500,
         // itemStyle: {
@@ -412,17 +391,7 @@ onMounted(async () => {
         //   color: 'rgba(255,255,255,244)',
         //   borderColor: '#fff',
         // },
-        itemStyle: {
-
-          areaColor: '#24CFF4',
-          borderColor: '#53D9FF',
-          borderWidth: 1.3,
-          shadowBlur: 15,
-          shadowColor: '#3a73c0',
-          shadowOffsetX: 7,
-          shadowOffsetY: 6,
-
-        },
+        itemStyle: geoMapItemStyle.style_1,
       }, {
         id: 2,
         name: 'gbaMap',
@@ -612,10 +581,6 @@ onMounted(async () => {
         id: 'ChinaPoint',
         type: 'scatter',
         coordinateSystem: 'geo',
-        effectType: 'ripple',
-        rippleEffect: {
-          brushType: 'fill',
-        },
         geoIndex: 0,
         data: [[113.541389, 22.195833]],
 
@@ -628,7 +593,6 @@ onMounted(async () => {
         },
         symbol: 'circle',
         symbolSize: 80,
-        showEffectOn: 'render',
         label: {
           formatter: '{b}',
           fontSize: 20,
@@ -669,15 +633,15 @@ onMounted(async () => {
         // z: 3000,
       },
     ],
-    // timeline: {
-    //   show: true,
-    //   axisType: 'category',
-    //   autoPlay: false,
-    //   loop: false,
-    //   playInterval: 500,
-    //   data: demoData.slice(1).map(item => item[0]),
-    // },
-    // options,
+    timeline: {
+      show: true,
+      axisType: 'category',
+      autoPlay: false,
+      loop: false,
+      playInterval: 500,
+      data: demoData.slice(1).map(item => item[0]),
+    },
+    options,
   }
   // console.log(option)
   // console.log(option)

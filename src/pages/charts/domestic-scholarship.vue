@@ -143,14 +143,14 @@ onMounted(async () => {
         }),
         {
           name: 'china',
-          type: 'effectScatter',
+          type: 'scatter',
           coordinateSystem: 'geo',
-          effectType: 'ripple',
+          // effectType: 'ripple',
           geoIndex: 0,
-          rippleEffect: {
-            brushType: 'fill',
-          },
-          showEffectOn: 'render',
+          // rippleEffect: {
+          //   brushType: 'fill',
+          // },
+          // showEffectOn: 'render',
           data: convertData(
             demoData[0].slice(1).map((cityName, cityIndex): CityData => {
               return {
@@ -163,10 +163,13 @@ onMounted(async () => {
           ),
           label: {
             show: true,
+            formatter: '{b}',
             fontSize: 20,
             distance: 10,
-            color: '#fff',
-            position: 'right', // inside|right
+            color: '#000',
+            // textBorderColor: '#000',
+            // textBorderWidth: 1,
+            position: 'left', // inside|right
           },
           labelLine: {
             show: true,
@@ -175,6 +178,14 @@ onMounted(async () => {
               color: '#bbb',
             },
           },
+          // labelLayout(params) {
+          //   return {
+          //     x: params.rect.x,
+          //     // x: params.rect.x,
+          //     moveOverlap: 'shiftY',
+          //     // align: 'left',
+          //   }
+          // },
           // itemStyle: {
           //   normal: {
           //     color: '#F4E925',
@@ -211,7 +222,14 @@ onMounted(async () => {
   const chartObj = echarts.init(elem)
   const response = await fetch('/data/100000_full.json')
 
-  echarts.registerMap('china', await response.json())
+  echarts.registerMap('china', await response.json(), {
+    南海诸岛: {
+    // 把阿拉斯加移到美国主大陆左下方
+      left: 80,
+      top: 20,
+      width: 5,
+    },
+  })
 
   const echartsOption: echarts.EChartsOption = {
     title: {
@@ -252,14 +270,6 @@ onMounted(async () => {
         left: 150,
         zoom: 1.5,
         roam: false,
-        // geoIndex: 0,
-        // itemStyle: {
-        //   areaColor: '#eee',
-        //   color: 'rgba(255,255,255,244)',
-        //   borderColor: '#fff',
-        //   // borderColor: '#000',
-        //   borderWidth: 1,
-        // },
         itemStyle: geoMapItemStyle.style_1,
         center: [100, 30],
         emphasis: {
@@ -280,37 +290,37 @@ onMounted(async () => {
     animationEasing: 'linear',
     animationEasingUpdate: 'linear',
     series: [
-      {
-        name: 'China',
-        // map: 'China',
-        type: 'effectScatter',
-        coordinateSystem: 'geo',
-        geoIndex: 0,
-        data: convertData(
-          dataChina,
-        ),
-        encode: {
-          value: 2,
-        },
-        symbolSize(val: number[]) {
-          return val[2] / 10
-        },
-        showEffectOn: 'emphasis',
-        rippleEffect: {
-          brushType: 'stroke',
-        },
-        // hoverAnimation: true,
-        label: {
-          formatter: '{b}',
-          position: 'right',
-          show: false,
-        },
-        itemStyle: {
-          color: '#f4e925',
-          shadowBlur: 10,
-          shadowColor: '#333',
-        },
-      },
+      // {
+      //   name: 'China',
+      //   // map: 'China',
+      //   type: 'effectScatter',
+      //   coordinateSystem: 'geo',
+      //   geoIndex: 0,
+      //   data: convertData(
+      //     dataChina,
+      //   ),
+      //   encode: {
+      //     value: 2,
+      //   },
+      //   symbolSize(val: number[]) {
+      //     return val[2] / 10
+      //   },
+      //   showEffectOn: 'emphasis',
+      //   rippleEffect: {
+      //     brushType: 'stroke',
+      //   },
+      //   // hoverAnimation: true,
+      //   label: {
+      //     formatter: '{b}',
+      //     position: 'right',
+      //     show: false,
+      //   },
+      //   itemStyle: {
+      //     color: '#f4e925',
+      //     shadowBlur: 10,
+      //     shadowColor: '#333',
+      //   },
+      // },
     ],
     timeline: {
       show: true,
