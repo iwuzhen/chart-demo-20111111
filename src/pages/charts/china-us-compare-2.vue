@@ -150,14 +150,14 @@ onMounted(async () => {
             labelLayout: {
               // moveOverlap: 'shiftX',
             },
-            endLabel: {
-              show: true,
-              fontSize: 16,
-              formatter(params: any) {
-                // console.log(params)
-                return `${params.seriesId}: ${params.value[1]}`
-              },
-            },
+            // endLabel: {
+            //   show: true,
+            //   fontSize: 16,
+            //   formatter(params: any) {
+            //     // console.log(params)
+            //     return `${params.seriesId}: ${params.value[1]}`
+            //   },
+            // },
             data: chinaData.slice(1).map((dataItem, currentIndex) => {
               if (currentIndex <= index)
                 return [dataItem[0], dataItem[cityIndex + 1]]
@@ -176,14 +176,14 @@ onMounted(async () => {
             labelLayout: {
               // moveOverlap: 'shiftX',
             },
-            endLabel: {
-              show: true,
-              fontSize: 16,
-              formatter(params: any) {
-                // console.log(params)
-                return `${params.seriesId}: ${params.value[1]}`
-              },
-            },
+            // endLabel: {
+            //   show: true,
+            //   fontSize: 16,
+            //   formatter(params: any) {
+            //     // console.log(params)
+            //     return `${params.seriesId}: ${params.value[1]}`
+            //   },
+            // },
             data: usaData.slice(1).map((dataItem, currentIndex) => {
               if (currentIndex <= index)
                 return [dataItem[0], dataItem[cityIndex + 1]]
