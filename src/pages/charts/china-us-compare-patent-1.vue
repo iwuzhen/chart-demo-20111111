@@ -6,7 +6,7 @@ import * as d3 from 'd3-geo'
 import 'd3-array'
 import { convertData, scale } from '~/hook/utils'
 import mapBackground from '~/assert/mapBackground.png'
-import { geoMapItemStyle } from '~/hook/sharedata'
+import { geoMapItemStyle, publicConfig } from '~/hook/sharedata'
 
 const USAprojection = d3.geoAlbersUsa()
 
@@ -185,14 +185,39 @@ onMounted(async () => {
     return
 
   const options: echarts.EChartsOption[] = demoData.slice(1).map((item, index, obj): echarts.EChartsOption => {
+    let sortCache: any[] = []
+    demoData[0].slice(1).forEach((v, index) => {
+      sortCache.push([v, item.slice(1)[index]])
+    })
+    sortCache = sortCache.sort((a, b) => b[1] - a[1])
     return {
-      title: {
+      title: [{
         text: `${item[0]}`,
         left: 860,
         bottom: 540,
         textStyle: {
           color: 'rgb(254,254,254,0.7)',
           fontSize: 46,
+        },
+      }, {
+        text: '专利',
+        left: 1,
+        top: 1,
+        textStyle: {
+          color: 'rgb(254,254,254,0.3)',
+          fontSize: 20,
+        },
+      }],
+      legend: {
+        show: true,
+        orient: 'vertical',
+        data: sortCache.map(item => item[0]),
+        // z: 30,
+        right: 550,
+        bottom: 200,
+        textStyle: {
+          color: 'rgb(255,255,255)',
+          fontSize: 16,
         },
       },
       series: [
@@ -669,18 +694,6 @@ onMounted(async () => {
       },
     ],
     color: ['#ee6666', '#fac858', '#91cc75', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#5470c6', '#ea7ccc'],
-    legend: {
-      show: true,
-      orient: 'vertical',
-      data: ['旧金山湾区', '粤港澳湾区', '纽约', '上海'],
-      // z: 30,
-      right: 550,
-      bottom: 200,
-      textStyle: {
-        color: 'rgb(255,255,255)',
-        fontSize: 16,
-      },
-    },
     graphic: [
       {
         type: 'group',
@@ -721,10 +734,11 @@ onMounted(async () => {
       axisType: 'category',
       autoPlay: false,
       loop: false,
-      playInterval: 500,
+      playInterval: publicConfig.playInterval,
       data: demoData.slice(1).map(item => item[0]),
     },
     options,
+    animation: publicConfig.animation,
   }
   // console.log(option)
   // console.log(option)

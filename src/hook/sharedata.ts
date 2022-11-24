@@ -18,3 +18,8 @@ export const geoMapItemStyle = {
     shadowOffsetY: 6,
   },
 }
+
+export const publicConfig = {
+  animation: false,
+  playInterval: 2000,
+}
