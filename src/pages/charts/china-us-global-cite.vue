@@ -3,7 +3,8 @@ import * as echarts from 'echarts'
 import _ from 'lodash'
 import { onMounted } from 'vue'
 import 'd3-array'
-import { scaleLinear, scaleSqrt } from 'd3-scale'
+// import { scaleLinear, scaleSqrt } from 'd3-scale'
+import { scaleSqrt } from 'd3-scale'
 import { geoCoordMap } from '~/hook/utils'
 
 const xScale = scaleSqrt()
@@ -19,7 +20,7 @@ const zhArea = ['zh', 'Shanghai', 'Beijing']
 const getMMcolor = (obj: { value: any; data: { source: string; coords: number[][] } }) => {
   // const usaColors = ['rgb(82, 5, 245)', 'rgb(43, 51, 252)', 'rgb(28, 106, 230)', ' rgb(43, 196, 252)', 'rgb(39, 245, 228)']
   // console.log(obj.value)
-  const alpha = xScale(obj.value)
+  const alpha = String(xScale(obj.value))
   if (usArea.includes(obj.data.source)) {
     const color = usaColors[usArea.indexOf(obj.data.source)]
     return color.replace(/[^,]+(?=\))/, alpha)
