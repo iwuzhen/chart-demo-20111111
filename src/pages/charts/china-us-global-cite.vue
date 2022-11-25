@@ -198,7 +198,8 @@ onMounted(async () => {
       left: 10,
     },
     tooltip: {
-      trigger: 'item',
+      show: false,
+      trigger: 'none',
       showDelay: 0,
       transitionDuration: 0.2,
     },
@@ -318,6 +319,10 @@ onMounted(async () => {
               // opacity: 0.5,
               curveness: 0.4,
             },
+            label: {
+              show: false,
+            },
+            silent: true,
             animation: false,
             large: false,
             cap: 'round',
