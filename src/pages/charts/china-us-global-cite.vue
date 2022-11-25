@@ -3,140 +3,50 @@ import * as echarts from 'echarts'
 import _ from 'lodash'
 import { onMounted } from 'vue'
 import 'd3-array'
-import { geoCoordMap, scale } from '~/hook/utils'
+import { scaleLinear, scaleSqrt } from 'd3-scale'
+import { geoCoordMap } from '~/hook/utils'
 
-const sourceData = [
-  [1987, 'JP', '天津', 1],
-  [2020, 'US', '天津', 2650],
-  [2020, 'IN', '天津', 1143],
-  [2020, 'GB', '天津', 955],
-  [2020, 'AU', '天津', 677],
-  [2020, 'KR', '天津', 600],
-  [2020, 'CA', '天津', 550],
-  [2020, 'JP', '天津', 444],
-  [2020, 'IR', '天津', 413],
-  [2020, 'SG', '天津', 410],
-  [2020, 'DE', '天津', 338],
-  [2020, 'US', '广州', 4843],
-  [2020, 'IN', '广州', 2268],
-  [2020, 'GB', '广州', 1883],
-  [2020, 'AU', '广州', 1476],
-  [2020, 'CA', '广州', 1079],
-  [2020, 'KR', '广州', 998],
-  [2020, 'IR', '广州', 767],
-  [2020, 'DE', '广州', 755],
-  [2020, 'JP', '广州', 680],
-  [2020, 'SG', '广州', 662],
-  [2020, 'US', '上海', 9860],
-  [2020, 'IN', '上海', 3426],
-  [2020, 'GB', '上海', 2947],
-  [2020, 'AU', '上海', 2084],
-  [2020, 'CA', '上海', 1915],
-  [2020, 'KR', '上海', 1665],
-  [2020, 'DE', '上海', 1513],
-  [2020, 'JP', '上海', 1252],
-  [2020, 'IR', '上海', 1183],
-  [2020, 'SG', '上海', 1072],
-  [2020, 'US', '长沙', 3027],
-  [2020, 'IN', '长沙', 1749],
-  [2020, 'GB', '长沙', 1177],
-  [2020, 'CA', '长沙', 965],
-  [2020, 'AU', '长沙', 812],
-  [2020, 'IR', '长沙', 737],
-  [2020, 'KR', '长沙', 687],
-  [2020, 'DE', '长沙', 531],
-  [2020, 'ES', '长沙', 450],
-  [2020, 'JP', '长沙', 415],
-  [2020, 'CN', '纽约', 31094],
-  [2020, 'GB', '纽约', 12288],
-  [2020, 'DE', '纽约', 9746],
-  [2020, 'CA', '纽约', 6851],
-  [2020, 'IN', '纽约', 6105],
-  [2020, 'AU', '纽约', 5544],
-  [2020, 'FR', '纽约', 4706],
-  [2020, 'IT', '纽约', 4314],
-  [2020, 'JP', '纽约', 4024],
-  [2020, 'KR', '纽约', 3753],
-  [2020, 'US', '纽约', 5140],
-  [2020, 'GB', '纽约', 1632],
-  [2020, 'IN', '纽约', 1562],
-  [2020, 'AU', '纽约', 1359],
-  [2020, 'CA', '纽约', 1220],
-  [2020, 'DE', '纽约', 853],
-  [2020, 'KR', '纽约', 838],
-  [2020, 'SG', '纽约', 758],
-  [2020, 'JP', '纽约', 624],
-  [2020, 'IR', '纽约', 603],
-  [2020, 'US', '深圳', 5541],
-  [2020, 'GB', '深圳', 1706],
-  [2020, 'IN', '深圳', 1637],
-  [2020, 'AU', '深圳', 1229],
-  [2020, 'CA', '深圳', 1152],
-  [2020, 'KR', '深圳', 954],
-  [2020, 'DE', '深圳', 893],
-  [2020, 'SG', '深圳', 831],
-  [2020, 'JP', '深圳', 573],
-  [2020, 'FR', '深圳', 544],
-  [2020, 'US', '北京', 32008],
-  [2020, 'IN', '北京', 9672],
-  [2020, 'GB', '北京', 9495],
-  [2020, 'AU', '北京', 6718],
-  [2020, 'CA', '北京', 6233],
-  [2020, 'DE', '北京', 5312],
-  [2020, 'KR', '北京', 5065],
-  [2020, 'SG', '北京', 3720],
-  [2020, 'JP', '北京', 3560],
-  [2020, 'IR', '北京', 3508],
-  [2020, 'US', '南京', 6917],
-  [2020, 'IN', '南京', 3637],
-  [2020, 'GB', '南京', 2495],
-  [2020, 'AU', '南京', 1964],
-  [2020, 'CA', '南京', 1737],
-  [2020, 'IR', '南京', 1533],
-  [2020, 'KR', '南京', 1405],
-  [2020, 'ES', '南京', 969],
-  [2020, 'JP', '南京', 948],
-  [2020, 'SG', '南京', 894],
-  [2020, 'US', '武汉', 5370],
-  [2020, 'IN', '武汉', 2786],
-  [2020, 'GB', '武汉', 2127],
-  [2020, 'AU', '武汉', 1650],
-  [2020, 'CA', '武汉', 1343],
-  [2020, 'IR', '武汉', 1221],
-  [2020, 'KR', '武汉', 1098],
-  [2020, 'DE', '武汉', 862],
-  [2020, 'SA', '武汉', 860],
-  [2020, 'JP', '武汉', 825],
-  [2020, 'US', '成都', 4502],
-  [2020, 'IN', '成都', 2207],
-  [2020, 'GB', '成都', 1472],
-  [2020, 'AU', '成都', 1300],
-  [2020, 'CA', '成都', 1227],
-  [2020, 'KR', '成都', 949],
-  [2020, 'IR', '成都', 890],
-  [2020, 'ES', '成都', 867],
-  [2020, 'PK', '成都', 747],
-  [2020, 'SG', '成都', 732],
-]
+const xScale = scaleSqrt()
+  .domain([0, 4000])
+  .range([0, 1])
 
-const getMMcolor = (obj) => {
-  // console.log(object)
-  if (obj.data.dest === '纽约')
-    return 'blue'
-  return 'red'
+const usaColors = ['rgb(82, 5, 245, 1)', 'rgb(43, 51, 252, 1)', 'rgb(28, 106, 230, 1)', ' rgb(43, 196, 252, 1)', 'rgb(39, 245, 228,1)', 'rgb(82, 23, 215, 1)']
+const zhColors = ['rgb(242,12,32,1)', 'rgb(252,85,13,1)', 'rgb(230,141,0,1)']
+
+const usArea = ['gb_area', 'gh_area', 'san_bay', 'rt_area', 'da_area', 'New York']
+const zhArea = ['zh', 'Shanghai', 'Beijing']
+
+const getMMcolor = (obj: { value: any; data: { source: string; coords: number[][] } }) => {
+  // const usaColors = ['rgb(82, 5, 245)', 'rgb(43, 51, 252)', 'rgb(28, 106, 230)', ' rgb(43, 196, 252)', 'rgb(39, 245, 228)']
+  // console.log(obj.value)
+  const alpha = xScale(obj.value)
+  if (usArea.includes(obj.data.source)) {
+    const color = usaColors[usArea.indexOf(obj.data.source)]
+    return color.replace(/[^,]+(?=\))/, alpha)
+  }
+
+  if (zhArea.includes(obj.data.source)) {
+    const color = zhColors[zhArea.indexOf(obj.data.source)]
+    return color.replace(/[^,]+(?=\))/, alpha)
+  }
+  // return `rgb(82,5,245,${alpha})`
+
+  if (obj.data.coords[0][0] > 180)
+    return `rgb(48,11,218,${alpha})`
+  return `rgb(194,43,10,${alpha})`
 }
 
-const getSize = (value) => {
-  // console.log(object)
-  return scale(value, 0, 31094, 2, 50)
-}
+const chartData = [['year', '旧金山湾区', '北卡三角研究区', '大波士顿', '达拉斯大都会区', '休斯顿大都会区', '粤港澳湾区', '纽约', '上海', '北京'], [1980, 4850, 739, 10846, 2746, 2547, 15, 3985, 3, 15], [1981, 5636, 849, 12206, 3172, 3003, 24, 4432, 3, 18], [1982, 6685, 986, 13510, 3534, 3392, 28, 4792, 3, 23], [1983, 7852, 1196, 15430, 3941, 3799, 35, 5304, 3, 28], [1984, 9044, 1404, 17065, 4412, 4260, 50, 5977, 7, 37], [1985, 10307, 1591, 19145, 4809, 4837, 72, 6568, 9, 55], [1986, 12092, 1799, 21743, 5288, 5507, 97, 7346, 9, 80], [1987, 14037, 2038, 24593, 5943, 6338, 118, 8079, 10, 116], [1988, 16755, 2409, 28801, 6632, 7486, 142, 8989, 11, 165], [1989, 20070, 2832, 34322, 7760, 8903, 179, 10160, 18, 220], [1990, 24027, 3555, 40933, 8906, 10649, 245, 11516, 24, 321], [1991, 28248, 4335, 48032, 10287, 12702, 323, 13078, 37, 420], [1992, 33332, 5409, 56803, 11917, 15151, 427, 14927, 63, 515], [1993, 38669, 6521, 65454, 13841, 17643, 572, 17025, 90, 656], [1994, 45999, 7945, 75597, 16039, 20577, 770, 19773, 111, 826], [1995, 52958, 9463, 85524, 18227, 23621, 1021, 22270, 148, 1017], [1996, 61020, 11276, 96368, 20844, 27056, 1463, 25263, 199, 1237], [1997, 69498, 13186, 107801, 23791, 30645, 2092, 28466, 243, 1488], [1998, 79001, 15323, 120496, 27177, 34554, 2869, 32073, 296, 1790], [1999, 89382, 17805, 134719, 31191, 39335, 3877, 36016, 376, 2128], [2000, 101052, 20511, 150591, 35790, 44504, 5221, 40574, 488, 2648], [2001, 113969, 23479, 167207, 40660, 49891, 6915, 45612, 639, 3294], [2002, 128664, 26853, 186024, 46235, 56434, 9131, 51558, 827, 4325], [2003, 146406, 30958, 208295, 52688, 64235, 11986, 58608, 1054, 5901], [2004, 167539, 35658, 233180, 60282, 73372, 16080, 66984, 1465, 8345], [2005, 192697, 40973, 262439, 69655, 84564, 21088, 76936, 2142, 11905], [2006, 223136, 47339, 297520, 80809, 98147, 28135, 88655, 3430, 17214], [2007, 258055, 54659, 337870, 94080, 114760, 37052, 101782, 5356, 24881], [2008, 297597, 62920, 383348, 109517, 133646, 48938, 116691, 8655, 36220], [2009, 343965, 72518, 434282, 127337, 154726, 63698, 133881, 13406, 51416], [2010, 396598, 82962, 490669, 147453, 178754, 81578, 153110, 19535, 70550], [2011, 454462, 94818, 552626, 169660, 205863, 102522, 174454, 27142, 93601], [2012, 518132, 107945, 618735, 194801, 234859, 126948, 197729, 36330, 121172], [2013, 591694, 123614, 694681, 223864, 268595, 156978, 224890, 48317, 157471], [2014, 675824, 141631, 779946, 256671, 306914, 194853, 255731, 63277, 204374], [2015, 777813, 162323, 876357, 293748, 349659, 240039, 292324, 81793, 263358], [2016, 898796, 184906, 983029, 334079, 396253, 296204, 335068, 104552, 337826], [2017, 1044857, 211477, 1101873, 377477, 447087, 366290, 384853, 132666, 429568], [2018, 1210404, 238837, 1225967, 420708, 497149, 444959, 439646, 165147, 534863], [2019, 1458649, 275636, 1393478, 476692, 562327, 567374, 513562, 215310, 698724], [2020, 1715652, 314631, 1571710, 533692, 628837, 704916, 593320, 273843, 881919], [2021, 2036771, 364692, 1798986, 606709, 715604, 914196, 693673, 363956, 1156536], [2022, 2165662, 392701, 1921747, 645864, 764267, 1048038, 747786, 427952, 1335697]]
 
 onMounted(async () => {
   let response = await fetch('/data/world_r.json')
   echarts.registerMap('world', await response.json())
 
-  response = await fetch('/data/test.coordinate.json')
-  const testCoordinate = await response.json()
+  response = await fetch('/data/coordinate_area.json')
+  const areaCoordinate = await response.json()
+
+  response = await fetch('/data/coordinate_city.json')
+  const cityCoordinate = await response.json()
 
   const elem = document.getElementById('chartID')
   // let chartObj = echarts.init(elem);
@@ -144,96 +54,147 @@ onMounted(async () => {
     return
 
   const chartObj = echarts.init(elem, undefined, { renderer: 'canvas' })
-  const colors = ['#00F8FF', '#00FF00', '#FFF800', '#FF0000']
-  const getColor = (value) => {
-    if (value <= 4000)
-      return colors[0]
 
-    else if (value > 4000 && value <= 8000)
-      return colors[1]
+  // init ret by year data
+  const unlimateLineData: any[] = []
+  const unlimateSactterData: any[] = []
+  const beginYear = 1980
+  const lastYear = 2022
 
-    else if (value > 8000 && value <= 16000)
-      return colors[2]
-
-    else
-      return colors[3]
-  }
-
-  const scatterData = []
-  const lineData = []
-
-  for (let i = 0; i < sourceData.length; i++) {
-    const item = sourceData[i]
-    const name = item[1]
-    const value = item[3]
-
-    scatterData.push({
-      name,
-      value: [...item.slice(0, 2), value],
-    })
-    const coordinateA = geoCoordMap[item[1]]
-    const coordinateB = geoCoordMap[item[2]]
-    if (!coordinateA || !coordinateB)
-      continue
-    if (coordinateA[0] < -10)
-      coordinateA[0] += 360
-    if (coordinateB[0] < -10)
-      coordinateB[0] += 360
-
-    lineData.push({
-      name,
-      value,
-      source: item[1],
-      dest: item[2],
-      coords: [coordinateB, coordinateA],
-    })
-  }
-
-  for (const row of testCoordinate.slice(0, 10000)) {
-    // if (row[0] < -10)
-    //   row[0] += 360
-    if (row[1] < -30)
-      row[1] += 360
-
-    lineData.push({
-      // name: 'US',
-      value: 1,
-      source: '杭州',
-      dest: 'US',
-      // coords: [[120.19, 30.26], row],
-      coords: [[120.19, 30.26], [row[1], row[0]]],
-    })
-
-    lineData.push({
-      name: 'US',
-      value: 1,
-      source: '纽约',
-      dest: '纽约',
-      // coords: [[120.19, 30.26], row],
-      coords: [[-74 + 360, 40.7], [row[1], row[0]]],
-    })
-    scatterData.push({
-      name: 'US',
-      value: [row[1], row[0]],
-    })
-  }
   const timeData = []
-  for (let i = 1; i < 40; i++)
-    timeData.push(i * 100)
+  for (let year = beginYear; year <= lastYear; year++) {
+    unlimateLineData.push([])
+    unlimateSactterData.push([])
+    timeData.push(year)
+  }
+
+  for (const row of areaCoordinate) {
+    const sourceLL = geoCoordMap[row[1]]
+    const yearIndex = row[0] - beginYear
+    // if (sourceLL[0] < -10) {
+    //   unlimateSactterData[yearIndex].push(
+    //     {
+    //       color: 'red',
+    //       value: [row[5] < -10 ? 360 + row[5] : row[5], row[4]],
+    //     },
+    //   )
+    // }
+    // else {
+    //   unlimateSactterData[yearIndex].push(
+    //     {
+    //       color: 'blue',
+    //       value: [row[5] < -10 ? 360 + row[5] : row[5], row[4]],
+    //     },
+    //   )
+    // }
+    let coords
+    const x1 = sourceLL[0] < -10 ? 360 + sourceLL[0] : sourceLL[0]
+    const x2 = row[5] < -10 ? 360 + row[5] : row[5]
+    const y1 = sourceLL[1]
+    const y2 = row[4]
+    if (usArea.includes(row[1])) {
+      if (x1 < x2)
+        coords = [[x1, y1], [x2, y2]]
+      else
+        coords = [[x2, y2], [x1, y1]]
+    }
+    else {
+      if (x1 < x2)
+        coords = [[x2, y2], [x1, y1]]
+      else
+        coords = [[x1, y1], [x2, y2]]
+    }
+
+    unlimateLineData[yearIndex].push(
+      {
+        value: row[3],
+        source: row[1],
+        dest: row[2],
+        // coords: [[120.19, 30.26], row],
+        coords,
+      },
+    )
+  }
+
+  for (const row of cityCoordinate) {
+    const yearIndex = row[0] - beginYear
+    let coords
+    const x1 = row[5] < -10 ? 360 + row[5] : row[5]
+    const x2 = row[7] < -10 ? 360 + row[7] : row[7]
+    const y1 = row[4]
+    const y2 = row[6]
+    if (usArea.includes(row[1])) {
+      if (x1 < x2)
+        coords = [[x1, y1], [x2, y2]]
+      else
+        coords = [[x2, y2], [x1, y1]]
+    }
+    else {
+      if (x1 < x2)
+        coords = [[x2, y2], [x1, y1]]
+      else
+        coords = [[x1, y1], [x2, y2]]
+    }
+
+    unlimateLineData[yearIndex].push(
+      {
+        value: row[3],
+        source: row[1],
+        dest: row[2],
+        // coords: [[120.19, 30.26], row],
+        coords,
+      },
+    )
+  }
 
   // console.log(lineData)
   const option: echarts.EChartsOption = {
-    // backgroundColor: '#012248',
-    title: {
-      text: 'China and US',
-    },
+    backgroundColor: 'rgb(0,131,255,0.2)',
+
+    grid: [
+      {
+        show: false,
+        id: 0,
+        right: 440,
+        bottom: 60,
+        height: 200,
+        width: 330,
+      },
+    ],
+    xAxis: [
+      {
+        show: true,
+        gridIndex: 0,
+        type: 'category',
+        // data: demoData.slice(1).map(item => item[0]),
+      },
+    ],
+    yAxis: [
+      {
+        show: true,
+        gridIndex: 0,
+        splitNumber: 2,
+        axisLabel: {
+          // color: 'rgb(255,255,255,0.8)',
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            opacity: 0.2,
+          },
+        },
+      },
+    ],
     timeline: {
       show: true,
       axisType: 'category',
       autoPlay: false,
       loop: false,
-      playInterval: 500,
+      playInterval: 20000,
       data: timeData,
+      currentIndex: 0,
+      right: 900,
+      left: 10,
     },
     tooltip: {
       trigger: 'item',
@@ -266,71 +227,145 @@ onMounted(async () => {
           disabled: true,
         },
         // center: [10, 30],
-        top: -30,
+        top: -50,
         left: 300,
+        regions: [{
+          name: 'China',
+          itemStyle: {
+            areaColor: 'rgb(255,0,0,0.2)',
+          },
+        }, {
+          name: 'United States',
+          itemStyle: {
+            areaColor: 'rgb(0,255,0,0.2)',
+          },
+        }],
       },
     ],
-    options: timeData.map((value, index) => {
+    options: unlimateLineData.map((lineData, index) => {
+      let sortCache: any[] = []
+      chartData[0].slice(1).forEach((v, subIndex) => {
+        sortCache.push([v, chartData[index].slice(1)[subIndex]])
+      })
+      sortCache = sortCache.sort((a, b) => b[1] - a[1])
       return {
+        title: [{
+          text: `${chartData[index + 1][0]}`,
+          left: 500,
+          bottom: 240,
+          textStyle: {
+            // color: 'rgb(254,254,254,0.7)',
+            fontSize: 58,
+          },
+        }, {
+          text: '论文引用分布',
+          left: 1,
+          top: 1,
+          textStyle: {
+            color: 'rgb(254,254,254,0.9)',
+            fontSize: 20,
+          },
+        }],
+        legend: {
+          show: true,
+          orient: 'vertical',
+          data: sortCache.map(item => item[0]),
+          // z: 30,
+          right: 280,
+          bottom: 50,
+          textStyle: {
+            // color: 'rgb(255,255,255)',
+            fontSize: 16,
+          },
+        },
         series: [
-          // {
-          //   name: 'bgLine',
-          //   coordinateSystem: 'geo',
-          //   type: 'lines',
-          //   lineStyle: {
-          //     color: param => getMMcolor(param),
-          //     // width: param => getSize(param),
-          //     width: 1,
-          //     opacity: 0.5,
-          //     curveness: 0.2,
-          //   },
-          //   animation: false,
-          //   large: true,
-          //   cap: 'round',
-          //   clip: false,
-          //   data: lineData.slice(value > 500 ? value - 500 : 0, value),
-          // },
-          ...lineData.slice(value > 500 ? value - 500 : 0, value).map((obj) => {
-            // console.log(obj)
+          ...chartData[0].slice(1).map((cityName, cityIndex): echarts.SeriesOption => {
             return {
-              name: 'bgLine',
-              cap: 'round',
-              coordinateSystem: 'geo',
-              type: 'lines',
-              animation: false,
-              lineStyle: {
-                color: param => getMMcolor(param),
-                width: getSize(obj.value),
-                // width: 2,
-                opacity: 0.5,
-                curveness: 0.2,
-              },
-              clip: false,
-              data: [obj],
+              id: cityName,
+              name: cityName,
+              type: 'line',
+              xAxisIndex: 0,
+              yAxisIndex: 0,
+              showSymbol: false,
+              // endLabel: {
+              //   show: true,
+              //   fontSize: 20,
+              //   formatter(params: any) {
+              //     // console.log(params)
+              //     return `${params.seriesId}: ${params.value[1]}`
+              //   },
+              // },
+              data: chartData.slice(1).map((dataItem, currentIndex) => {
+                if (currentIndex <= index)
+                  return [dataItem[0], dataItem[cityIndex + 1]]
+                else
+                  return [dataItem[0], '-']
+              }),
             }
           }),
           {
-            name: 'scatter',
-            type: 'scatter',
+            name: 'bgLine',
             coordinateSystem: 'geo',
-            // rippleEffect: {
-            //   scale: 5,
-            //   brushType: 'stroke',
-            // },
-            label: {
-              show: false,
-              position: 'right',
-              formatter: '{b}',
+            type: 'lines',
+            symbol: 'circle',
+            symbolSize: 6,
+            // polyline: true,
+            lineStyle: {
+              color: (param: any) => getMMcolor(param),
+              // width: param => getSize(param),
+              width: 1,
+              // opacity: 0.5,
+              curveness: 0.4,
             },
-            largeThreshold: 20,
             animation: false,
-            silent: true,
-            symbolSize: 5,
-            itemStyle: {
-              color: param => getColor(param.data.value[2]),
-            },
-            data: scatterData.slice(value > 500 ? value - 500 : 0, value),
+            large: false,
+            cap: 'round',
+            clip: false,
+            data: lineData,
           },
+          // ...lineData.map((obj) => {
+          //   // console.log(obj)
+          //   return {
+          //     name: 'bgLine',
+          //     cap: 'round',
+          //     coordinateSystem: 'geo',
+          //     type: 'lines',
+          //     animation: false,
+          //     lineStyle: {
+          //       color: param => getMMcolor(param),
+          //       width: getSize(obj.value),
+          //       // width: obj.value,
+          //       // width: 2,
+          //       opacity: 0.5,
+          //       curveness: 0.2,
+          //     },
+          //     clip: false,
+          //     data: [obj],
+          //   }
+          // }),
+          // {
+          //   name: 'scatter',
+          //   type: 'scatter',
+          //   coordinateSystem: 'geo',
+          //   // rippleEffect: {
+          //   //   scale: 5,
+          //   //   brushType: 'stroke',
+          //   // },
+          //   label: {
+          //     show: false,
+          //     position: 'right',
+          //     formatter: '{b}',
+          //   },
+          //   largeThreshold: 20,
+          //   animation: false,
+          //   silent: true,
+          //   symbolSize: 5,
+          //   itemStyle: {
+          //     // color: param => getColor(param.data.value[2]),
+          //     color: param => param.data.color,
+          //   },
+          //   data: unlimateSactterData[index],
+          // },
           // {
           //   name: 'sLine',
           //   type: 'lines',
@@ -349,7 +384,7 @@ onMounted(async () => {
           //   data: lineData,
           // },
         ],
-      }
+      } as echarts.EChartsOption
     }),
 
     animationDuration: 0,

@@ -294,22 +294,22 @@ onMounted(async () => {
         //     show: false,
         //   },
         // },
-        itemStyle: {
-          normal: {
-            areaColor: '#24CFF4',
-            borderColor: '#53D9FF',
-            borderWidth: 1.3,
-            shadowBlur: 15,
-            shadowColor: '#3a73c0',
-            shadowOffsetX: 7,
-            shadowOffsetY: 6,
-          },
-          emphasis: {
-            areaColor: '#8dd7fc',
-            borderWidth: 1.6,
-            shadowBlur: 25,
-          },
-        },
+        // itemStyle: {
+
+        //     areaColor: '#24CFF4',
+        //     borderColor: '#53D9FF',
+        //     borderWidth: 1.3,
+        //     shadowBlur: 15,
+        //     shadowColor: '#3a73c0',
+        //     shadowOffsetX: 7,
+        //     shadowOffsetY: 6,
+        //   },
+        //   emphasis: {
+        //     areaColor: '#8dd7fc',
+        //     borderWidth: 1.6,
+        //     shadowBlur: 25,
+        //   },
+        // },
       },
       {
         id: 1,
@@ -323,7 +323,8 @@ onMounted(async () => {
           },
           unproject(point: [number, number]) {
             if (USAprojection.invert)
-              return USAprojection.invert(point)
+              return USAprojection.invert(point) as number[]
+            return []
           },
         },
         center: ['0%', '30%'],

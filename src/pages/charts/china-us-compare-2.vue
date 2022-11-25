@@ -400,7 +400,17 @@ onMounted(async () => {
       {
         show: true,
         gridIndex: 0,
-        max: 180000,
+        splitNumber: 2,
+        axisLabel: {
+          color: 'rgb(255,255,255,0.8)',
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            opacity: 0.2,
+          },
+        },
+        // max: 180000,
       },
     ],
     toolbox: {
