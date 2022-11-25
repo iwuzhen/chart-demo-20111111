@@ -36,6 +36,7 @@
     <!-- <a btn m-3 text-sm href="charts/domestic-scholarship"><p>国内论文</p></a> -->
     <a btn m-3 text-sm href="charts/china-us-compare-1"><p>中美 4 地区论文数比较</p></a>
     <a btn m-3 text-sm href="charts/china-us-compare-2"><p>中美多个大城市论文数比较</p></a>
+    <a btn m-3 text-sm href="charts/china-us-compare-3"><p>中美（区域城市合并）论文数比较</p></a>
     <a btn m-3 text-sm href="charts/china-us-global-cite"><p>中美多个大城市论文数全球引用分布</p></a>
   </div>
 
@@ -47,6 +48,7 @@
     <!-- <a btn m-3 text-sm href="charts/domestic-scholarship"><p>国内论文</p></a> -->
     <a btn m-3 text-sm href="charts/china-us-compare-patent-1"><p>中美 4 地区专利数比较</p></a>
     <a btn m-3 text-sm href="charts/china-us-compare-patent-2"><p>中美多个大城市专利数比较</p></a>
+    <a btn m-3 text-sm href="charts/china-us-compare-patent-3"><p>中美（区域城市合并）专利数比较</p></a>
   </div>
 </template>
 

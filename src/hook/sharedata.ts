@@ -21,5 +21,5 @@ export const geoMapItemStyle = {
 
 export const publicConfig = {
   animation: false,
-  playInterval: 2000,
+  playInterval: 3000,
 }
