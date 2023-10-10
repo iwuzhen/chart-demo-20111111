@@ -428,7 +428,7 @@ onMounted(async () => {
     timeline: {
       show: true,
       axisType: 'category',
-      autoPlay: false,
+      autoPlay: true,
       loop: false,
       playInterval: publicConfig.playInterval,
       data: usaData.slice(1).map(item => item[0]),

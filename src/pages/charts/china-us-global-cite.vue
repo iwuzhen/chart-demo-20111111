@@ -189,7 +189,7 @@ onMounted(async () => {
     timeline: {
       show: true,
       axisType: 'category',
-      autoPlay: false,
+      autoPlay: true,
       loop: false,
       playInterval: 3000,
       data: timeData,
