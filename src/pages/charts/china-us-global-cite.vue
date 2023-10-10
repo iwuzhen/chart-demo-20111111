@@ -191,7 +191,7 @@ onMounted(async () => {
       axisType: 'category',
       autoPlay: false,
       loop: false,
-      playInterval: 20000,
+      playInterval: 5000,
       data: timeData,
       currentIndex: 0,
       right: 900,
