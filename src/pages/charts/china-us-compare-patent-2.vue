@@ -92,11 +92,11 @@ onMounted(async () => {
     return {
       title: [{
         text: `${item[0]}`,
-        left: 860,
+        left: 830,
         bottom: 540,
         textStyle: {
           color: 'rgb(254,254,254,0.7)',
-          fontSize: 46,
+          fontSize: 66,
         },
       }, {
         text: '专利',
@@ -429,7 +429,7 @@ onMounted(async () => {
       show: true,
       axisType: 'category',
       autoPlay: true,
-      loop: false,
+      loop: true,
       playInterval: publicConfig.playInterval,
       data: usaData.slice(1).map(item => item[0]),
     },
