@@ -429,7 +429,7 @@ onMounted(async () => {
       show: true,
       axisType: 'category',
       autoPlay: true,
-      loop: true,
+      loop: false,
       playInterval: publicConfig.playInterval,
       data: usaData.slice(1).map(item => item[0]),
     },
