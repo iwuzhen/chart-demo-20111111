@@ -817,7 +817,7 @@ onMounted(async () => {
             image: mapBackground,
 
             // image: ygk,
-            repeat: 'no-repeat',
+            repeat: 'repeat',
             // repeat: 'repeat-x',
           },
         },
@@ -843,7 +843,7 @@ onMounted(async () => {
             imageWidth: 1920,
             imageHeight: 1080,
             image: mapBackground,
-            repeat: 'no-repeat',
+            repeat: 'repeat',
           },
         },
       },
